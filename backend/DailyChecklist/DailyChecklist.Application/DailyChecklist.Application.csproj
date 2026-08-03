@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DailyChecklist.Domain\DailyChecklist.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

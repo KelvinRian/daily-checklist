@@ -1,7 +1,16 @@
-﻿namespace DailyChecklist.Application.Routine.Create
+﻿using DailyChecklist.Domain.Interfaces.Repositories;
+
+namespace DailyChecklist.Application.Routine.Create
 {
     public class CreateRoutineHandler
     {
+        private readonly IRoutineRepository _routineRepository;
+        
+        public CreateRoutineHandler(IRoutineRepository routineRepository)
+        {
+            _routineRepository = routineRepository;   
+        }
+
         public async Task Handle(CreateRoutineCommand command)
         {
             // TODO
