@@ -6,6 +6,8 @@
         public int Order { get; set; }
         public ICollection<Task> Tasks { get; set; }
 
+        private TaskGroup() { }
+
         public TaskGroup(string name, int order, ICollection<Task> tasks)
         {
             Name = name;

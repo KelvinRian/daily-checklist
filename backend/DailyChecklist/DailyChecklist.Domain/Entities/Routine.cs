@@ -9,6 +9,8 @@
         public ICollection<Day> Days { get; set; }
         public bool Active { get; set; } = true;
 
+        private Routine() { }
+
         public Routine(string name, string description, ICollection<Task> tasks, ActivePeriod activePeriod) 
         {
             Name = name;
