@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\Repositories\" />
+    <ProjectReference Include="..\DailyChecklist.Application\DailyChecklist.Application.csproj" />
   </ItemGroup>
 
 </Project>

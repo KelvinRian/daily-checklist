@@ -17,6 +17,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DailyChecklist.Api\DailyChecklist.Api.csproj" />
+    <ProjectReference Include="..\DailyChecklist.Application\DailyChecklist.Application.csproj" />
+    <ProjectReference Include="..\DailyChecklist.Domain\DailyChecklist.Domain.csproj" />
+    <ProjectReference Include="..\DailyChecklist.Infrastructure\DailyChecklist.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Using Include="Xunit" />
   </ItemGroup>
 

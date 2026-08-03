@@ -9,5 +9,11 @@
         public TaskGroup? TaskGroup { get; set; }
         public Guid? TaskGroupId { get; set; }
         public ICollection<DayTask> DayTasks { get; set; }
+
+        public Task(string name, int order)
+        {
+            Name = name;
+            Order = order;
+        }
     }
 }
