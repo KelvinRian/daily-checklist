@@ -4,18 +4,18 @@
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public ICollection<Task> Tasks { get; set; }
+        public ICollection<RoutineItem> Items { get; set; }
         public ICollection<ActivePeriod> ActivePeriods { get; set; }
         public ICollection<Day> Days { get; set; }
         public bool Active { get; set; } = true;
 
         private Routine() { }
 
-        public Routine(string name, string description, ICollection<Task> tasks, ActivePeriod activePeriod) 
+        public Routine(string name, string description, ICollection<RoutineItem> items, ActivePeriod activePeriod) 
         {
             Name = name;
             Description = description;
-            Tasks = tasks;
+            Items = items;
             ActivePeriods = new List<ActivePeriod> { activePeriod };
         }
     }

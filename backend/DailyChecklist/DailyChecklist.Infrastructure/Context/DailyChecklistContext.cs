@@ -1,6 +1,5 @@
 ﻿using DailyChecklist.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using EntityTask = DailyChecklist.Domain.Entities.Task;
 
 namespace DailyChecklist.Infrastructure.Context
 {
@@ -12,8 +11,9 @@ namespace DailyChecklist.Infrastructure.Context
         }
 
         public DbSet<Routine> Routines => Set<Routine>();
-        public DbSet<EntityTask> Tasks => Set<EntityTask>();
-        public DbSet<TaskGroup> TaskGroups => Set<TaskGroup>();
+        public DbSet<GroupItem> GroupItems => Set<GroupItem>();
+        public DbSet<TaskItem> TaskItems => Set<TaskItem>();
+        public DbSet<GroupTask> GroupTasks => Set<GroupTask>();
         public DbSet<ActivePeriod> ActivePeriods => Set<ActivePeriod>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

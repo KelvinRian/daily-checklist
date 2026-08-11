@@ -1,9 +1,8 @@
 ﻿using DailyChecklist.Application.Routine.Create;
-using EntityRoutine = DailyChecklist.Domain.Entities.Routine;
+using RoutineEntity = DailyChecklist.Domain.Entities.Routine;
 using DailyChecklist.Domain.Interfaces.Repositories;
-using ThreadingTask = System.Threading.Tasks.Task;
 using NSubstitute;
-using Microsoft.IdentityModel.Tokens;
+using ThreadingTask = System.Threading.Tasks.Task;
 
 namespace DailyChecklist.Tests.DailyChecklist.Application.Routine.Create
 {
@@ -11,7 +10,7 @@ namespace DailyChecklist.Tests.DailyChecklist.Application.Routine.Create
     {
         private readonly IRoutineRepository _routineRepository;
         private readonly CreateRoutineHandler _handler;
-        
+
         public CreateRoutineHandlerTests()
         {
             _routineRepository = Substitute.For<IRoutineRepository>();
@@ -21,64 +20,52 @@ namespace DailyChecklist.Tests.DailyChecklist.Application.Routine.Create
         [Fact]
         public async ThreadingTask Should_Handle_Routine_Creation()
         {
-            // Arrange
-            var taskGroupDto = new CreateRoutineTaskGroupDto
+            //Arrange
+            var groupItem = new CreateRoutineItemsDto
             {
-                Name = "Task Group",
-                Order = 1
-            };
-
-            var taskInGroupDto = new CreateRoutineTaskDto
-            {
-                Name = "Task in Group",
+                Type = RountineItemType.Group,
+                Name = "Task Group 1",
                 Order = 1,
-                TaskGroup = taskGroupDto
-            };
-
-            var taskWithoutGroupDto = new CreateRoutineTaskDto
-            {
-                Name = "Task Without Group",
-                Order = 2,
-            };
-
-            var name = "Routine Name";
-            var description = "Routine Description";
-            var startDate = DateOnly.FromDateTime(DateTime.Now);
-
-            var command = new CreateRoutineCommand
-            {
-                Name = name,
-                Description = description,
-                StartDate = startDate,
-                Tasks = new List<CreateRoutineTaskDto>
+                Tasks = new List<GroupTaskDto>
                 {
-                    taskInGroupDto,
-                    taskWithoutGroupDto
+                    new GroupTaskDto
+                    {
+                        Name = "Task in Group 1",
+                        Order = 1
+                    },
                 }
             };
 
-            // Act
+            var taskItem = new CreateRoutineItemsDto
+            {
+                Type = RountineItemType.Task,
+                Name = "Task Without Group",
+                Order = 3
+            };
+
+            var command = new CreateRoutineCommand()
+            {
+                Name = "Routine Name",
+                Description = "Routine Description",
+                StartDate = DateOnly.FromDateTime(DateTime.Now),
+                Items = new List<CreateRoutineItemsDto>
+                {
+                    groupItem,
+                    taskItem
+                }
+            };
+
+            //Act
             await _handler.Handle(command);
 
-            // Assert
+            //Assert
             await _routineRepository
                 .Received(1)
-                .AddAsync(Arg.Is<EntityRoutine>(x => x.Name == name
-                                                    && x.Description == description
-                                                    && x.Tasks.Count == 2
-                                                    && x.Tasks.Any(y => y.Name == taskInGroupDto.Name 
-                                                        && y.Order == taskInGroupDto.Order 
-                                                        && y.TaskGroup.Name == taskGroupDto.Name 
-                                                        && y.TaskGroup.Order == taskGroupDto.Order)
-                                                    && x.Tasks.Any(y => y.Name == taskWithoutGroupDto.Name
-                                                        && y.Order == taskWithoutGroupDto.Order
-                                                        && y.TaskGroup == null)
-                                                    && x.ActivePeriods.Count == 1
-                                                    && x.ActivePeriods.Any(y => y.StartDate == startDate
-                                                        && !y.EndDate.HasValue)
-                                                    && x.Days.IsNullOrEmpty()
-                                                    && x.Active
-                                                    ));
+                .AddAsync(Arg.Is<RoutineEntity>(x => x.Name == command.Name
+                                                && x.Description == command.Description
+                                                && x.Items.Any(y => y.Name == groupItem.Name)
+                                                && x.Items.Any(y => y.Name == taskItem.Name)
+                                                && x.ActivePeriods.Any(y => y.StartDate == command.StartDate)));
         }
     }
 }

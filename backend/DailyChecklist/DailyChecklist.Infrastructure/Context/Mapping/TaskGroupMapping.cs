@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DailyChecklist.Infrastructure.Context.Mapping
 {
-    public class TaskGroupMapping : IEntityTypeConfiguration<TaskGroup>
+    public class TaskGroupMapping : IEntityTypeConfiguration<GroupItem>
     {
-        public void Configure(EntityTypeBuilder<TaskGroup> builder)
+        public void Configure(EntityTypeBuilder<GroupItem> builder)
         {
             builder.ToTable("TaskGroups");
 
