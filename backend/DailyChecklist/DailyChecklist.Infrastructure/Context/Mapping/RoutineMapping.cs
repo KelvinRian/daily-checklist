@@ -19,12 +19,12 @@ namespace DailyChecklist.Infrastructure.Context.Mapping
             builder.Property(x => x.Description)
                 .HasMaxLength(500);
 
-            builder.HasMany(x => x.ActivePeriods)
+            builder.HasMany(x => x.Items)
                 .WithOne(x => x.Routine)
                 .HasForeignKey(x => x.RoutineId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasMany(x => x.Days)
+            builder.HasMany(x => x.ActivePeriods)
                 .WithOne(x => x.Routine)
                 .HasForeignKey(x => x.RoutineId)
                 .OnDelete(DeleteBehavior.Cascade);

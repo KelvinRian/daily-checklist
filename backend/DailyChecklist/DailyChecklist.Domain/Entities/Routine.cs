@@ -6,7 +6,6 @@
         public string Description { get; set; }
         public ICollection<RoutineItem> Items { get; set; }
         public ICollection<ActivePeriod> ActivePeriods { get; set; }
-        public ICollection<Day> Days { get; set; }
         public bool Active { get; set; } = true;
 
         private Routine() { }
