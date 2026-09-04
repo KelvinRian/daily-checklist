@@ -5,12 +5,12 @@
         public string Name { get; set; }
         public string Description { get; set; }
         public DateOnly StartDate { get; set; }
-        public ICollection<CreateRoutineItemsDto> Items { get; set; }
+        public ICollection<CreateRoutineItemDto> Items { get; set; }
     }
 
-    public class CreateRoutineItemsDto 
+    public class CreateRoutineItemDto 
     {
-        public RountineItemType Type { get; set; }
+        public RoutineItemType Type { get; set; }
         public string Name { get; set; }
         public int Order { get; set; }
         public ICollection<GroupTaskDto> Tasks { get; set; }
@@ -22,7 +22,7 @@
         public int Order { get; set; }
     }
 
-    public enum RountineItemType
+    public enum RoutineItemType
     {
         Task = 1,
         Group = 2

@@ -23,7 +23,7 @@ namespace DailyChecklist.Application.Routine.Create
 
             var groupItemsInCommand = command
                 .Items
-                .Where(i => i.Type == RountineItemType.Group);
+                .Where(i => i.Type == RoutineItemType.Group);
 
             var routineItems = new List<RoutineItem>();
             foreach (var groupItem in groupItemsInCommand)
@@ -34,7 +34,7 @@ namespace DailyChecklist.Application.Routine.Create
 
             var taskItems = command
                 .Items
-                .Where(i => i.Type == RountineItemType.Task);
+                .Where(i => i.Type == RoutineItemType.Task);
 
             foreach(var taskItem in taskItems)
             {

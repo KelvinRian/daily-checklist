@@ -8,8 +8,7 @@ namespace DailyChecklist.Application.Routine.Create
         {
             AddRulesForName();
             AddRulesForDescription();
-            //TODO
-            //Rules for Items
+            AddRulesForItems();
         }
 
         private void AddRulesForName()
@@ -21,6 +20,11 @@ namespace DailyChecklist.Application.Routine.Create
         private void AddRulesForDescription()
         {
             RuleFor(x => x.Description).MaximumLength(500).WithMessage("'Description' must not be greater than 500 characters.");
+        }
+
+        private void AddRulesForItems()
+        {
+            RuleForEach(x => x.Items).SetValidator(new CreateRoutineItemDtoValidator());
         }
     }
 }

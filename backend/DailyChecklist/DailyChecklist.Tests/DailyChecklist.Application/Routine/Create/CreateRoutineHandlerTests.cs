@@ -21,9 +21,9 @@ namespace DailyChecklist.Tests.DailyChecklist.Application.Routine.Create
         public async ThreadingTask Should_Handle_Routine_Creation()
         {
             //Arrange
-            var groupItem = new CreateRoutineItemsDto
+            var groupItem = new CreateRoutineItemDto
             {
-                Type = RountineItemType.Group,
+                Type = RoutineItemType.Group,
                 Name = "Task Group 1",
                 Order = 1,
                 Tasks = new List<GroupTaskDto>
@@ -36,9 +36,9 @@ namespace DailyChecklist.Tests.DailyChecklist.Application.Routine.Create
                 }
             };
 
-            var taskItem = new CreateRoutineItemsDto
+            var taskItem = new CreateRoutineItemDto
             {
-                Type = RountineItemType.Task,
+                Type = RoutineItemType.Task,
                 Name = "Task Without Group",
                 Order = 3
             };
@@ -48,7 +48,7 @@ namespace DailyChecklist.Tests.DailyChecklist.Application.Routine.Create
                 Name = "Routine Name",
                 Description = "Routine Description",
                 StartDate = DateOnly.FromDateTime(DateTime.Now),
-                Items = new List<CreateRoutineItemsDto>
+                Items = new List<CreateRoutineItemDto>
                 {
                     groupItem,
                     taskItem
