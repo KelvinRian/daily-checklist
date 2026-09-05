@@ -101,5 +101,9 @@ namespace DailyChecklist.Tests.DailyChecklist.Application.Routine.Create
             // Assert
             Assert.True(result.IsValid);
         }
+
+        //TODO
+        //Item Should Be Unique
+        //Valid Command
     }
 }
