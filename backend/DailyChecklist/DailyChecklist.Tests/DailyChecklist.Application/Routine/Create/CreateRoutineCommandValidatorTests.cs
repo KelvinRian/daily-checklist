@@ -105,8 +105,55 @@ namespace DailyChecklist.Tests.DailyChecklist.Application.Routine.Create
             Assert.True(result.IsValid);
         }
 
-        //TODO
-        //Item Should Be Unique
-        //Valid Command
+        [Fact]
+        public void should_Validate_Unique_Order_Values_For_Items()
+        {
+            // Arrange
+            var command = new CreateRoutineCommand
+            {
+                Name = "Valid Name",
+                Description = "Valid Description",
+                Items = new List<CreateRoutineItemDto>
+                {
+                    new CreateRoutineItemDto { Order = 1, Type = RoutineItemType.Task, Name = "Task 1" },
+                    new CreateRoutineItemDto { Order = 2, Type = RoutineItemType.Task, Name = "Task 2" },
+                    new CreateRoutineItemDto { Order = 2, Type = RoutineItemType.Task, Name = "Task 3" }
+                }
+            };
+            var validator = new CreateRoutineCommandValidator();
+
+            // Act
+            var result = validator.Validate(command);
+
+            // Assert
+            Assert.False(result.IsValid);
+            Assert.Contains(result.Errors, e =>
+                e.PropertyName == "Items" &&
+                e.ErrorMessage == "'Order' values must be unique.");
+        }
+
+        [Fact]
+        public void Should_Validate_Valid_Command()
+        {
+            // Arrange
+            var command = new CreateRoutineCommand
+            {
+                Name = "Valid Name",
+                Description = "Valid Description",
+                Items = new List<CreateRoutineItemDto>
+                {
+                    new CreateRoutineItemDto { Order = 1, Type = RoutineItemType.Task, Name = "Task 1" },
+                    new CreateRoutineItemDto { Order = 2, Type = RoutineItemType.Task, Name = "Task 2" }
+                }
+            };
+
+            var validator = new CreateRoutineCommandValidator();
+
+            // Act
+            var result = validator.Validate(command);
+
+            // Assert
+            Assert.True(result.IsValid);
+        }
     }
 }
