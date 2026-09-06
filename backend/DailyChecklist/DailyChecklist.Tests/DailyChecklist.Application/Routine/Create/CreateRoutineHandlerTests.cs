@@ -3,18 +3,21 @@ using RoutineEntity = DailyChecklist.Domain.Entities.Routine;
 using DailyChecklist.Domain.Interfaces.Repositories;
 using NSubstitute;
 using ThreadingTask = System.Threading.Tasks.Task;
+using FluentValidation;
 
 namespace DailyChecklist.Tests.DailyChecklist.Application.Routine.Create
 {
     public class CreateRoutineHandlerTests
     {
         private readonly IRoutineRepository _routineRepository;
+        private readonly IValidator<CreateRoutineCommand> _validator;
         private readonly CreateRoutineHandler _handler;
 
         public CreateRoutineHandlerTests()
         {
             _routineRepository = Substitute.For<IRoutineRepository>();
-            _handler = new CreateRoutineHandler(_routineRepository);
+            _validator = Substitute.For<IValidator<CreateRoutineCommand>>();
+            _handler = new CreateRoutineHandler(_routineRepository, _validator);
         }
 
         [Fact]

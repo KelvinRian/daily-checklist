@@ -1,7 +1,8 @@
-﻿using DailyChecklist.Domain.Interfaces.Repositories;
-using ThreadingTask = System.Threading.Tasks.Task;
+﻿using DailyChecklist.Domain.Entities;
+using DailyChecklist.Domain.Interfaces.Repositories;
+using FluentValidation;
 using RoutineEntity = DailyChecklist.Domain.Entities.Routine;
-using DailyChecklist.Domain.Entities;
+using ThreadingTask = System.Threading.Tasks.Task;
 
 
 namespace DailyChecklist.Application.Routine.Create
@@ -9,17 +10,20 @@ namespace DailyChecklist.Application.Routine.Create
     public class CreateRoutineHandler
     {
         private readonly IRoutineRepository _routineRepository;
+        private readonly IValidator<CreateRoutineCommand> _validator;
 
-        public CreateRoutineHandler(IRoutineRepository routineRepository)
+        public CreateRoutineHandler(IRoutineRepository routineRepository, IValidator<CreateRoutineCommand> validator)
         {
             _routineRepository = routineRepository;
+            _validator = validator;
         }
 
         public async ThreadingTask Handle(CreateRoutineCommand command)
         {
             // TODO
-            // FluentValidation
             // DomainNotifications
+
+            await _validator.ValidateAndThrowAsync(command);
 
             var groupItemsInCommand = command
                 .Items
