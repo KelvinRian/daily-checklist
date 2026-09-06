@@ -41,7 +41,7 @@ namespace DailyChecklist.Application.Routine.Create
 
         private static Func<ICollection<CreateRoutineItemDto>, bool> OrderValuesMustBeUnique()
         {
-            return items => items
+            return items => items is null || items
                 .Select(item => item.Order)
                 .Distinct()
                 .Count() == items.Count;

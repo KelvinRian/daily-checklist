@@ -13,6 +13,7 @@ namespace DailyChecklist.Tests.DailyChecklist.Application.Routine.Create
             var command = new CreateRoutineCommand
             {
                 Name = name,
+                Description = "description",
             };
             var validator = new CreateRoutineCommandValidator();
 
@@ -33,6 +34,7 @@ namespace DailyChecklist.Tests.DailyChecklist.Application.Routine.Create
             var command = new CreateRoutineCommand
             {
                 Name = new string('a', 201),
+                Description = "description",
             };
             var validator = new CreateRoutineCommandValidator();
 
@@ -53,6 +55,7 @@ namespace DailyChecklist.Tests.DailyChecklist.Application.Routine.Create
             var command = new CreateRoutineCommand
             {
                 Name = new string('a', 200),
+                Description = "description",
             };
             var validator = new CreateRoutineCommandValidator();
 

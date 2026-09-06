@@ -43,8 +43,8 @@ namespace DailyChecklist.Application.Routine.Create
 
         private static Func<ICollection<GroupTaskDto>, bool> OrderValuesMustBeUnique()
         {
-            return tasks => tasks
-                .Select(task => task.Order)
+            return tasks => tasks is null ||
+                tasks.Select(task => task.Order)
                 .Distinct()
                 .Count() == tasks.Count;
         }
