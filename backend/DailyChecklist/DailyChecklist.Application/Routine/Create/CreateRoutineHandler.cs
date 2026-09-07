@@ -10,12 +10,10 @@ namespace DailyChecklist.Application.Routine.Create
     public class CreateRoutineHandler
     {
         private readonly IRoutineRepository _routineRepository;
-        private readonly IValidator<CreateRoutineCommand> _validator;
 
-        public CreateRoutineHandler(IRoutineRepository routineRepository, IValidator<CreateRoutineCommand> validator)
+        public CreateRoutineHandler(IRoutineRepository routineRepository)
         {
             _routineRepository = routineRepository;
-            _validator = validator;
         }
 
         public async ThreadingTask Handle(CreateRoutineCommand command)
@@ -23,7 +21,12 @@ namespace DailyChecklist.Application.Routine.Create
             // TODO
             // DomainNotifications
 
-            await _validator.ValidateAndThrowAsync(command);
+            var validator = new CreateRoutineCommandValidator();
+            var result = validator.Validate(command);
+            if (!result.IsValid)
+            {
+                throw new ValidationException(result.Errors);
+            }
 
             var groupItemsInCommand = command
                 .Items

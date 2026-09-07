@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DailyChecklist.Application\DailyChecklist.Application.csproj" />
     <ProjectReference Include="..\DailyChecklist.Infrastructure\DailyChecklist.Infrastructure.csproj" />
   </ItemGroup>
 

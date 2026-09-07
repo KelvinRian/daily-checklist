@@ -10,14 +10,12 @@ namespace DailyChecklist.Tests.DailyChecklist.Application.Routine.Create
     public class CreateRoutineHandlerTests
     {
         private readonly IRoutineRepository _routineRepository;
-        private readonly IValidator<CreateRoutineCommand> _validator;
         private readonly CreateRoutineHandler _handler;
 
         public CreateRoutineHandlerTests()
         {
             _routineRepository = Substitute.For<IRoutineRepository>();
-            _validator = Substitute.For<IValidator<CreateRoutineCommand>>();
-            _handler = new CreateRoutineHandler(_routineRepository, _validator);
+            _handler = new CreateRoutineHandler(_routineRepository);
         }
 
         [Fact]
@@ -69,6 +67,16 @@ namespace DailyChecklist.Tests.DailyChecklist.Application.Routine.Create
                                                 && x.Items.Any(y => y.Name == groupItem.Name)
                                                 && x.Items.Any(y => y.Name == taskItem.Name)
                                                 && x.ActivePeriods.Any(y => y.StartDate == command.StartDate)));
+        }
+
+        [Fact]
+        public async ThreadingTask Should_Notify_Invalid_Command()
+        {
+            //Arrange
+            var command = new CreateRoutineCommand();
+            
+            //Act & Assert
+            await Assert.ThrowsAsync<ValidationException>(() => _handler.Handle(command));
         }
     }
 }
