@@ -1,5 +1,7 @@
 using DailyChecklist.Application.Routine.Create;
+using DailyChecklist.Domain.Interfaces.Repositories;
 using DailyChecklist.Infrastructure.Context;
+using DailyChecklist.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +14,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<CreateRoutineHandler>();
+
+builder.Services.AddScoped<IRoutineRepository, RoutineRepository>();
 
 builder.Services.AddDbContext<DailyChecklistContext>(options =>
 {
