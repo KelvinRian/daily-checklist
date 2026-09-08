@@ -18,41 +18,67 @@ namespace DailyChecklist.Application.Routine.Create
 
         public async ThreadingTask Handle(CreateRoutineCommand command)
         {
-            // TODO
-            // DomainNotifications
+            Validate(command);
+            var routine = CreateRoutine(command);
+            await _routineRepository.AddAsync(routine);
+        }
 
+        private static void Validate(CreateRoutineCommand command)
+        {
             var validator = new CreateRoutineCommandValidator();
             var result = validator.Validate(command);
             if (!result.IsValid)
             {
                 throw new ValidationException(result.Errors);
             }
+        }
 
-            var groupItemsInCommand = command
-                .Items
-                .Where(i => i.Type == RoutineItemType.Group);
-
-            var routineItems = new List<RoutineItem>();
-            foreach (var groupItem in groupItemsInCommand)
-            {
-                var groupTasks = groupItem.Tasks.Select(t => new GroupTask(t.Name, t.Order)).ToList();
-                routineItems.Add(new GroupItem(groupItem.Name, groupItem.Order, groupTasks));
-            }
-
-            var taskItems = command
-                .Items
-                .Where(i => i.Type == RoutineItemType.Task);
-
-            foreach(var taskItem in taskItems)
-            {
-                routineItems.Add(new TaskItem(taskItem.Name, taskItem.Order));
-            };
+        private static RoutineEntity CreateRoutine(CreateRoutineCommand command)
+        {
+            var routineItems = CreateRoutineItems(command);
 
             var activePeriod = new ActivePeriod(command.StartDate);
 
             var routine = new RoutineEntity(command.Name, command.Description, routineItems, activePeriod);
 
-            await _routineRepository.AddAsync(routine);
+            return routine;
+        }
+
+        private static List<RoutineItem> CreateRoutineItems(CreateRoutineCommand command)
+        {
+            var routineItems = new List<RoutineItem>();
+
+            AddGroupItems(command, routineItems);
+            AddTaskItems(command, routineItems);
+
+            return routineItems;
+        }
+
+        private static void AddGroupItems(CreateRoutineCommand command, List<RoutineItem> routineItems)
+        {
+            var groupItemsInCommand = command
+                .Items?
+                .Where(i => i.Type == RoutineItemType.Group)
+                ?? Enumerable.Empty<CreateRoutineItemDto>();
+
+            foreach (var groupItem in groupItemsInCommand)
+            {
+                var groupTasks = groupItem.Tasks?.Select(t => new GroupTask(t.Name, t.Order)).ToList();
+                routineItems.Add(new GroupItem(groupItem.Name, groupItem.Order, groupTasks));
+            }
+        }
+
+        private static void AddTaskItems(CreateRoutineCommand command, List<RoutineItem> routineItems)
+        {
+            var taskItems = command
+                            .Items?
+                            .Where(i => i.Type == RoutineItemType.Task)
+                            ?? Enumerable.Empty<CreateRoutineItemDto>();
+
+            foreach (var taskItem in taskItems)
+            {
+                routineItems.Add(new TaskItem(taskItem.Name, taskItem.Order));
+            };
         }
     }
 }

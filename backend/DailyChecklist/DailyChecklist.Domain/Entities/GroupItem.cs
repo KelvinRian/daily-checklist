@@ -6,7 +6,7 @@
 
         private GroupItem() { }
 
-        public GroupItem(string name, int order, ICollection<GroupTask> tasks)
+        public GroupItem(string name, int order, ICollection<GroupTask>? tasks)
         {
             Name = name;
             Order = order;
