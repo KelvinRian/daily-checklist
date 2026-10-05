@@ -11,20 +11,20 @@ namespace DailyChecklist.Api.Controllers
 
         public RoutinesController(CreateRoutineHandler createRoutineHandler)
         {
-            _createRoutineHandler = createRoutineHandler;      
+            _createRoutineHandler = createRoutineHandler;
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateRoutine([FromBody] CreateRoutineCommand command)
         {
-            try
+            var result = await _createRoutineHandler.Handle(command);
+            if (result.IsSuccess)
             {
-                await _createRoutineHandler.Handle(command);
-                return Ok();
+                return Ok(result.Success);
             }
-            catch (FluentValidation.ValidationException ex)
+            else
             {
-                return BadRequest(ex.Errors);
+                return StatusCode(result.Failure!.Code, result.Failure.Message);
             }
         }
     }

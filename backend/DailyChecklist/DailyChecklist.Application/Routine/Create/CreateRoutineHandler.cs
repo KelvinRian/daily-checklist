@@ -2,6 +2,7 @@
 using DailyChecklist.Domain.Entities;
 using DailyChecklist.Domain.Interfaces.Repositories;
 using FluentValidation;
+using System.Text;
 using RoutineEntity = DailyChecklist.Domain.Entities.Routine;
 
 
@@ -16,27 +17,23 @@ namespace DailyChecklist.Application.Routine.Create
             _routineRepository = routineRepository;
         }
 
-        //TODO
-        //Trocar retorno para Task Result<Guid>
-        //Retornar Id da rotina criada em casos de sucesso
-        //Implementar Result Pattern nos casos de falha
-        //Adequar testes unitários existentes e criar novos, caso necessário
         public async Task<Result<Guid>> Handle(CreateRoutineCommand command)
-        {
-            Validate(command);
-            var routine = CreateRoutine(command);
-            await _routineRepository.AddAsync(routine);
-            return Result<Guid>.AsSuccess(routine.Id);
-        }
-
-        private static void Validate(CreateRoutineCommand command)
         {
             var validator = new CreateRoutineCommandValidator();
             var result = validator.Validate(command);
             if (!result.IsValid)
             {
-                throw new ValidationException(result.Errors);
+                var errorMessages = new StringBuilder();
+                foreach(var error in result.Errors)
+                {
+                    errorMessages.AppendLine(error.ErrorMessage);
+                }
+
+                return Result<Guid>.AsFailure(new Failure(400, errorMessages.ToString()));
             }
+            var routine = CreateRoutine(command);
+            await _routineRepository.AddAsync(routine);
+            return Result<Guid>.AsSuccess(routine.Id);
         }
 
         private static RoutineEntity CreateRoutine(CreateRoutineCommand command)

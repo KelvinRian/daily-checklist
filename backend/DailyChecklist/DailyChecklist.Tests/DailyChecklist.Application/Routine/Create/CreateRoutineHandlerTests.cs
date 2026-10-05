@@ -57,7 +57,7 @@ namespace DailyChecklist.Tests.DailyChecklist.Application.Routine.Create
             };
 
             //Act
-            await _handler.Handle(command);
+            var result = await _handler.Handle(command);
 
             //Assert
             await _routineRepository
@@ -67,6 +67,8 @@ namespace DailyChecklist.Tests.DailyChecklist.Application.Routine.Create
                                                 && x.Items.Any(y => y.Name == groupItem.Name)
                                                 && x.Items.Any(y => y.Name == taskItem.Name)
                                                 && x.ActivePeriods.Any(y => y.StartDate == command.StartDate)));
+
+            Assert.True(result.IsSuccess);
         }
 
         [Fact]
@@ -74,9 +76,12 @@ namespace DailyChecklist.Tests.DailyChecklist.Application.Routine.Create
         {
             //Arrange
             var command = new CreateRoutineCommand();
-            
-            //Act & Assert
-            await Assert.ThrowsAsync<ValidationException>(() => _handler.Handle(command));
+
+            //Act
+            var result = await _handler.Handle(command);
+
+            //Assert
+            Assert.True(result.IsFailure);
         }
     }
 }
