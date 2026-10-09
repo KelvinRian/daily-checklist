@@ -1,4 +1,6 @@
-﻿namespace DailyChecklist.Domain.Entities
+﻿using DailyChecklist.Domain.Enums;
+
+namespace DailyChecklist.Domain.Entities
 {
     public sealed class TaskItem : RoutineItem
     {
@@ -7,5 +9,8 @@
             Name = name;
             Order = order;
         }
+
+        public override RoutineItemType GetTypeEnum()
+            => RoutineItemType.Task;
     }
 }

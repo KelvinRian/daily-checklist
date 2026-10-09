@@ -1,5 +1,6 @@
 ﻿using DailyChecklist.Application.Routine.Create;
 using DailyChecklist.Application.Routine.GetAll;
+using DailyChecklist.Application.Routine.GetById;
 using DailyChecklist.Domain.Filters;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,11 +12,15 @@ namespace DailyChecklist.Api.Controllers
     {
         private readonly CreateRoutineHandler _createRoutineHandler;
         private readonly GetAllRoutinesHandler _getAllRoutinesHandler;
+        private readonly GetRoutineByIdHandler _getRoutineByIdHandler;
 
-        public RoutinesController(CreateRoutineHandler createRoutineHandler, GetAllRoutinesHandler getAllRoutinesHandler)
+        public RoutinesController(CreateRoutineHandler createRoutineHandler, 
+            GetAllRoutinesHandler getAllRoutinesHandler,
+            GetRoutineByIdHandler getRoutineByIdHandler)
         {
             _createRoutineHandler = createRoutineHandler;
             _getAllRoutinesHandler = getAllRoutinesHandler;
+            _getRoutineByIdHandler = getRoutineByIdHandler;
         }
 
         //TODO
@@ -41,8 +46,21 @@ namespace DailyChecklist.Api.Controllers
             return Ok(result);
         }
 
-        //TODO
-        // GET BY ID
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById([FromRoute] Guid id)
+        {
+            var result = await _getRoutineByIdHandler.Handle(id);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.Success);
+            }
+            else
+            {
+                return StatusCode(result.Failure!.Code, result.Failure.Message);
+            }
+        }
+
         // Retorno:
         // { Id, Name, Description, GroutItems (+ GroupTasks), TaskItems, StartDate }
         // Filtro: Id e apenas registros não excluídos
@@ -61,7 +79,6 @@ namespace DailyChecklist.Api.Controllers
         //TODO
         // DELETE
         // Exlui uma rotina pelo ID
-        // Não permite excluir uma rotinha que tem ou já teve um período tivo
-
+        // Não permite excluir uma rotina que tem ou já teve um período tivo
     }
 }

@@ -8,5 +8,6 @@ namespace DailyChecklist.Domain.Interfaces.Repositories
     {
         TreadingTask AddAsync(Routine routine);
         Task<IEnumerable<Routine>> GetAllAsync(RoutineFilters filters);
+        Task<Routine> GetById(Guid id);
     }
 }

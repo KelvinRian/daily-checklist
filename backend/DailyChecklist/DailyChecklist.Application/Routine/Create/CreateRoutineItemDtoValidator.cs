@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using DailyChecklist.Domain.Enums;
+using FluentValidation;
 
 namespace DailyChecklist.Application.Routine.Create
 {

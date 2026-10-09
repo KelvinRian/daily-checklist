@@ -53,5 +53,17 @@ namespace DailyChecklist.Infrastructure.Repositories
             }
             return query;
         }
+
+        public async Task<Routine> GetById(Guid id)
+        {
+            var routine = await _context
+                .Routines
+                .Include(x => x.Items)
+                    .ThenInclude(x => (x as GroupItem)!.GroupTasks)
+                .Include(x => x.ActivePeriods)
+                .FirstOrDefaultAsync(x => x.Active && x.Id == id);
+
+            return routine;
+        }
     }
 }

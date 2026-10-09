@@ -1,4 +1,5 @@
 ﻿using DailyChecklist.Application.Routine.Create;
+using DailyChecklist.Domain.Enums;
 
 namespace DailyChecklist.Tests.DailyChecklist.Application.Routine.Create
 {

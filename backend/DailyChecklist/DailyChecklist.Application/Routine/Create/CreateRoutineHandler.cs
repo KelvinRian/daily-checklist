@@ -1,5 +1,6 @@
 ﻿using DailyChecklist.Application.Utils.Result;
 using DailyChecklist.Domain.Entities;
+using DailyChecklist.Domain.Enums;
 using DailyChecklist.Domain.Interfaces.Repositories;
 using FluentValidation;
 using System.Text;

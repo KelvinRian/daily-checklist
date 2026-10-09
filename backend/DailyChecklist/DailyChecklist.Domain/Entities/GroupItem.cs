@@ -1,4 +1,6 @@
-﻿namespace DailyChecklist.Domain.Entities
+﻿using DailyChecklist.Domain.Enums;
+
+namespace DailyChecklist.Domain.Entities
 {
     public sealed class GroupItem : RoutineItem
     {
@@ -12,5 +14,8 @@
             Order = order;
             GroupTasks = tasks;
         }
+
+        public override RoutineItemType GetTypeEnum()
+            => RoutineItemType.Group;
     }
 }

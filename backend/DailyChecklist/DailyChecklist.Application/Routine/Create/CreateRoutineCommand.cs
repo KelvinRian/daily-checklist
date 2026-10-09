@@ -1,4 +1,6 @@
-﻿namespace DailyChecklist.Application.Routine.Create
+﻿using DailyChecklist.Domain.Enums;
+
+namespace DailyChecklist.Application.Routine.Create
 {
     public class CreateRoutineCommand
     {
@@ -20,11 +22,5 @@
     {
         public string Name { get; set; }
         public int Order { get; set; }
-    }
-
-    public enum RoutineItemType
-    {
-        Task = 1,
-        Group = 2
     }
 }

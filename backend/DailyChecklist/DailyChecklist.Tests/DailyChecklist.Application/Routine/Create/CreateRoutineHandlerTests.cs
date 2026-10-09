@@ -4,6 +4,7 @@ using DailyChecklist.Domain.Interfaces.Repositories;
 using NSubstitute;
 using ThreadingTask = System.Threading.Tasks.Task;
 using FluentValidation;
+using DailyChecklist.Domain.Enums;
 
 namespace DailyChecklist.Tests.DailyChecklist.Application.Routine.Create
 {
