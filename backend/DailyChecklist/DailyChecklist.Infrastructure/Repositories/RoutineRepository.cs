@@ -23,14 +23,35 @@ namespace DailyChecklist.Infrastructure.Repositories
 
         public async Task<IEnumerable<Routine>> GetAllAsync(RoutineFilters routineFilters)
         {
-            //TODO
-            // Apply Filters
-            var routines = await _context
+            var routines = _context
                 .Routines
-                .Where(x => x.Active)
-                .ToListAsync();
+                .Where(x => x.Active);
 
-            return routines;
+            routines = ApplyPagination(routines, routineFilters);
+            routines = ApplyOptionalFilters(routines, routineFilters);
+
+            return await routines.ToListAsync();
+        }
+
+        private static IQueryable<Routine> ApplyPagination(IQueryable<Routine>? query, RoutineFilters routineFilters)
+        {
+            if (routineFilters.Page.HasValue && routineFilters.PageSize.HasValue)
+            {
+                query = query
+                    .Skip((routineFilters.Page.Value - 1) * routineFilters.PageSize.Value)
+                    .Take(routineFilters.PageSize.Value);
+            }
+            return query;
+        }
+
+        private static IQueryable<Routine> ApplyOptionalFilters(IQueryable<Routine>? query, RoutineFilters routineFilters)
+        {
+            if (!string.IsNullOrEmpty(routineFilters.Name))
+            {
+                query = query
+                    .Where(x => x.Name.Contains(routineFilters.Name));
+            }
+            return query;
         }
     }
 }
