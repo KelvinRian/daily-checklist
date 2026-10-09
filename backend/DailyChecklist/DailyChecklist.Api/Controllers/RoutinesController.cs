@@ -1,4 +1,6 @@
 ﻿using DailyChecklist.Application.Routine.Create;
+using DailyChecklist.Application.Routine.GetAll;
+using DailyChecklist.Domain.Filters;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DailyChecklist.Api.Controllers
@@ -8,10 +10,12 @@ namespace DailyChecklist.Api.Controllers
     public class RoutinesController : ControllerBase
     {
         private readonly CreateRoutineHandler _createRoutineHandler;
+        private readonly GetAllRoutinesHandler _getAllRoutinesHandler;
 
-        public RoutinesController(CreateRoutineHandler createRoutineHandler)
+        public RoutinesController(CreateRoutineHandler createRoutineHandler, GetAllRoutinesHandler getAllRoutinesHandler)
         {
             _createRoutineHandler = createRoutineHandler;
+            _getAllRoutinesHandler = getAllRoutinesHandler;
         }
 
         //TODO
@@ -30,12 +34,12 @@ namespace DailyChecklist.Api.Controllers
             }
         }
 
-        //TODO
-        // GET ALL
-        // Retorno: List de Rotina com Id e Name
-        // Ordenação: Data de criação. Do mais recente para o mais antigo
-        // Filtros customizáveis: Name, Paginação
-        // Filtros fixos: Apenas registros não excluídos
+        [HttpGet]
+        public async Task<IActionResult> GetAll([FromQuery] RoutineFilters routineFilters)
+        {
+            var result = await _getAllRoutinesHandler.Handle(routineFilters);
+            return Ok(result);
+        }
 
         //TODO
         // GET BY ID

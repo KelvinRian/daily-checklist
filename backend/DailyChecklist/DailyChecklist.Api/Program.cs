@@ -1,4 +1,5 @@
 using DailyChecklist.Application.Routine.Create;
+using DailyChecklist.Application.Routine.GetAll;
 using DailyChecklist.Domain.Interfaces.Repositories;
 using DailyChecklist.Infrastructure.Context;
 using DailyChecklist.Infrastructure.Repositories;
@@ -14,6 +15,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<CreateRoutineHandler>();
+builder.Services.AddScoped<GetAllRoutinesHandler>();
 
 builder.Services.AddScoped<IRoutineRepository, RoutineRepository>();
 
