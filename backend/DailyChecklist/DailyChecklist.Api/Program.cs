@@ -1,6 +1,7 @@
 using DailyChecklist.Application.Routine.Create;
 using DailyChecklist.Application.Routine.GetAll;
 using DailyChecklist.Application.Routine.GetById;
+using DailyChecklist.Application.Routine.Inactivate;
 using DailyChecklist.Domain.Interfaces.Repositories;
 using DailyChecklist.Infrastructure.Context;
 using DailyChecklist.Infrastructure.Repositories;
@@ -18,6 +19,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<CreateRoutineHandler>();
 builder.Services.AddScoped<GetAllRoutinesHandler>();
 builder.Services.AddScoped<GetRoutineByIdHandler>();
+builder.Services.AddScoped<InactivateRoutineHandler>();
 
 builder.Services.AddScoped<IRoutineRepository, RoutineRepository>();
 

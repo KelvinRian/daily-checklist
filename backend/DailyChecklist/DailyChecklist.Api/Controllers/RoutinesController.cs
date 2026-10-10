@@ -24,7 +24,7 @@ namespace DailyChecklist.Api.Controllers
         }
 
         //TODO
-        //Verifica se existe uma rotina ativa nesse perído e a finaliza, caso exista
+        //Verificar se existe uma rotina ativa nesse perído e a finalizar, caso exista
         [HttpPost]
         public async Task<IActionResult> CreateRoutine([FromBody] CreateRoutineCommand command)
         {
@@ -60,10 +60,6 @@ namespace DailyChecklist.Api.Controllers
                 return StatusCode(result.Failure!.Code, result.Failure.Message);
             }
         }
-
-        // Retorno:
-        // { Id, Name, Description, GroutItems (+ GroupTasks), TaskItems, StartDate }
-        // Filtro: Id e apenas registros não excluídos
 
         //TODO
         // UPDATE

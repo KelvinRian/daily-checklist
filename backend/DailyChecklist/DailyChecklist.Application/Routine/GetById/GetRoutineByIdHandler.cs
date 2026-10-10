@@ -14,7 +14,7 @@ namespace DailyChecklist.Application.Routine.GetById
 
         public async Task<Result<RoutineDetailsDto>> Handle(Guid id)
         {
-            var routine = await _routineRepository.GetById(id);
+            var routine = await _routineRepository.GetByIdWithIncludes(id);
 
             if (routine == null)
                 return Result<RoutineDetailsDto>.AsFailure(new Failure(404, "Routine not found"));

@@ -3,6 +3,7 @@ using DailyChecklist.Domain.Filters;
 using DailyChecklist.Domain.Interfaces.Repositories;
 using DailyChecklist.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace DailyChecklist.Infrastructure.Repositories
 {
@@ -53,8 +54,17 @@ namespace DailyChecklist.Infrastructure.Repositories
             }
             return query;
         }
-
+        
         public async Task<Routine> GetById(Guid id)
+        {
+            var routine = await _context
+                .Routines
+                .FirstOrDefaultAsync(x => x.Active && x.Id == id);
+
+            return routine;
+        }
+
+        public async Task<Routine> GetByIdWithIncludes(Guid id)
         {
             var routine = await _context
                 .Routines
@@ -64,6 +74,12 @@ namespace DailyChecklist.Infrastructure.Repositories
                 .FirstOrDefaultAsync(x => x.Active && x.Id == id);
 
             return routine;
+        }
+
+        public async Task UpdateAsync(Routine routine)
+        {
+            _context.Routines.Update(routine);
+            await _context.SaveChangesAsync();
         }
     }
 }

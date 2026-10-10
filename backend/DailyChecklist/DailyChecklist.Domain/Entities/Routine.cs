@@ -17,5 +17,10 @@
             Items = items;
             ActivePeriods = new List<ActivePeriod> { activePeriod };
         }
+
+        public void Inactivate()
+        {
+            Active = false;
+        }
     }
 }
