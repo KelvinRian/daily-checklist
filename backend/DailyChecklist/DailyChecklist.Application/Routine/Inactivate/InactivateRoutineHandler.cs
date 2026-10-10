@@ -1,5 +1,4 @@
-﻿using DailyChecklist.Application.Utils.Result;
-using DailyChecklist.Domain.Interfaces.Repositories;
+﻿using DailyChecklist.Domain.Interfaces.Repositories;
 
 namespace DailyChecklist.Application.Routine.Inactivate
 {
@@ -12,19 +11,14 @@ namespace DailyChecklist.Application.Routine.Inactivate
             _routineRepository = routineRepository;
         }
 
-        public async Task<Result> Handle(Guid id)
+        public async Task Handle(Guid id)
         {
             var routine = await _routineRepository.GetById(id);
 
-            if (routine == null)
-            {
-                return Result.AsFailure(new Failure(404, "Routine not found"));
-            }
-            else
+            if (routine != null)
             {
                 routine.Inactivate();
                 await _routineRepository.UpdateAsync(routine);
-                return Result.AsSuccess();
             }
         }
     }

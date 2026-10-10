@@ -1,6 +1,7 @@
 ﻿using DailyChecklist.Application.Routine.Create;
 using DailyChecklist.Application.Routine.GetAll;
 using DailyChecklist.Application.Routine.GetById;
+using DailyChecklist.Application.Routine.Inactivate;
 using DailyChecklist.Domain.Filters;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,14 +14,17 @@ namespace DailyChecklist.Api.Controllers
         private readonly CreateRoutineHandler _createRoutineHandler;
         private readonly GetAllRoutinesHandler _getAllRoutinesHandler;
         private readonly GetRoutineByIdHandler _getRoutineByIdHandler;
+        private readonly InactivateRoutineHandler _inactivateRoutineHandler;
 
         public RoutinesController(CreateRoutineHandler createRoutineHandler, 
             GetAllRoutinesHandler getAllRoutinesHandler,
-            GetRoutineByIdHandler getRoutineByIdHandler)
+            GetRoutineByIdHandler getRoutineByIdHandler,
+            InactivateRoutineHandler inactivateRoutineHandler)
         {
             _createRoutineHandler = createRoutineHandler;
             _getAllRoutinesHandler = getAllRoutinesHandler;
             _getRoutineByIdHandler = getRoutineByIdHandler;
+            _inactivateRoutineHandler = inactivateRoutineHandler;
         }
 
         //TODO
@@ -72,9 +76,11 @@ namespace DailyChecklist.Api.Controllers
         // ENCERRAR
         // Encerra uma rotina pelo ID, setando a data de término no Active Period da rotina em questão
 
-        //TODO
-        // DELETE
-        // Exlui uma rotina pelo ID
-        // Não permite excluir uma rotina que tem ou já teve um período tivo
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        {
+            await _inactivateRoutineHandler.Handle(id);
+            return Ok();
+        }
     }
 }
